@@ -1,0 +1,118 @@
+:root {
+  /* Основные цвета */
+  --color-black: #000000;
+  --color-blue: #1f91dc;
+  --color-green: #a9fc67;
+  --color-gray: #808080;
+
+  /* Интерактивные цвета */
+  --color-hover: #bbdefb;
+  --color-selected: #1e88e5;
+  }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  }
+
+.board {
+  position: relative;
+  width: fit-content;
+  display: grid;
+  grid-template-rows: repeat(10, 2rem);
+  grid-template-columns: repeat(10, 2rem);
+  border: 1px solid var(--color-black);
+  }
+
+.port {
+  width: 100%;
+  max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: .5rem;
+  }
+
+.row {
+  display: contents;
+  }
+
+.cell {
+  box-sizing: border-box;
+  border: 1px solid var(--color-black);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  }
+
+.cell-water {
+  background-color: var(--color-blue);
+  }
+
+.cell-ship {
+  background-color: var(--color-gray);
+  }
+
+.cell-hit {
+  background-color: red;
+  }
+
+.cell-miss {
+  background-color: lightgray;
+  }
+
+.cell-buffer {
+  background-color: lightgreen;
+  }
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+  }
+
+.btn-primary {
+  background-color: #007bff;
+  color: #ffffff;
+  border: 1px solid #007bff;
+  }
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  }
+
+.btn-auto-width {
+  width: auto;
+  }
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }

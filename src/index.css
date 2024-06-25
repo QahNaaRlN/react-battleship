@@ -1,0 +1,33 @@
+/* abeezee-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'ABeeZee';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/abeezee-v22-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  }
+* {
+  margin: 0;
+  }
+body {
+  font-family: 'ABeeZee', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  }
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  }
+input, button, textarea, select {
+  font: inherit;
+  }
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  }
+#root, #__next {
+  isolation: isolate;
+  }
