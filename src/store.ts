@@ -1,5 +1,5 @@
 import {makeAutoObservable} from 'mobx';
-import { Board } from './types';
+import {Board} from './types';
 import Ship from './models/Ship'
 import {createEmptyBoard, getRandomInt, isCellFree} from './utils/logic';
 import {directions, SHIP_SIZES} from './utils/constants';
@@ -7,10 +7,23 @@ import {directions, SHIP_SIZES} from './utils/constants';
 class GameStore {
     board: Board = createEmptyBoard();
     ships: Ship[] = [];
+    draggingShipId: number | null = null;
+    hoveredCell: { x: number, y: number } | null = null;
 
     constructor() {
         makeAutoObservable(this);
         this.populatePortWithShips();
+    }
+
+    setHoveredCell(x: number | null, y: number | null) {
+        this.hoveredCell = x !== null && y !== null ? { x, y } : null;
+    }
+
+    isShipOverValidCell(shipId: number): boolean {
+        const ship = this.ships.find(s => s.id === shipId);
+        if (!ship || !this.hoveredCell) return false;
+
+        return this.canPlaceShip(this.board, ship.size, this.hoveredCell.x, this.hoveredCell.y, ship.direction);
     }
 
     setBoard(newBoard: Board) {
@@ -19,6 +32,11 @@ class GameStore {
 
     setShips(newShips: Ship[]) {
         this.ships = newShips;
+    }
+
+    setDraggingShip(shipId: number | null) {
+        this.draggingShipId = shipId;
+        console.log('draggingShipId updated:', shipId);
     }
 
     populatePortWithShips() {
@@ -37,9 +55,46 @@ class GameStore {
                 this.removeShipFromBoard(ship);
             }
             this.setBoard(this.placeShipOnBoard(this.board, ship, position.x, position.y));
-            ship.setPosition?.(position.x, position.y);
+            ship.setPosition(position.x, position.y);
         }
     }
+
+    // moveShip(shipId: number, x: number, y: number) {
+    //     const ship = this.ships.find(s => s.id === shipId);
+    //     if (!ship) return;
+    //
+    //     if (this.canPlaceShip(this.board, ship.size, x, y, ship.direction)) {
+    //         if (ship.x !== null && ship.y !== null) {
+    //             // Удаляем корабль с предыдущей позиции
+    //             this.removeShipFromBoard(ship);
+    //         }
+    //         this.setBoard(this.placeShipOnBoard(this.board, ship, x, y));
+    //         ship.setPosition?.(x, y);
+    //     }
+    // }
+
+    returnShipToPort(shipId: number) {
+        const ship = this.ships.find(s => s.id === shipId);
+        if (ship) {
+            this.removeShipFromBoard(ship);
+            ship.setPosition(null, null);
+        }
+    }
+
+    // moveShip(shipId: number, x: number, y: number) {
+    //     const ship = this.ships.find(s => s.id === shipId);
+    //     if (!ship) return;
+    //
+    //     if (this.canPlaceShip(this.board, ship.size, x, y, ship.direction)) {
+    //         if (ship.x !== null && ship.y !== null) {
+    //             this.removeShipFromBoard(ship);
+    //         }
+    //         this.setBoard(this.placeShipOnBoard(this.board, ship, x, y));
+    //         ship.setPosition(x, y);
+    //     } else {
+    //         this.returnShipToPort(shipId);
+    //     }
+    // }
 
     moveShip(shipId: number, x: number, y: number) {
         const ship = this.ships.find(s => s.id === shipId);
@@ -47,11 +102,12 @@ class GameStore {
 
         if (this.canPlaceShip(this.board, ship.size, x, y, ship.direction)) {
             if (ship.x !== null && ship.y !== null) {
-                // Удаляем корабль с предыдущей позиции
                 this.removeShipFromBoard(ship);
             }
             this.setBoard(this.placeShipOnBoard(this.board, ship, x, y));
-            ship.setPosition?.(x, y);
+            ship.setPosition(x, y);
+        } else {
+            this.returnShipToPort(shipId);
         }
     }
 
@@ -73,7 +129,7 @@ class GameStore {
         this.removeShipFromBoard(ship);
 
         if (this.canPlaceShip(this.board, ship.size, ship.x, ship.y, newDirection)) {
-            ship.rotate?.();
+            ship.rotate();
             this.setBoard(this.placeShipOnBoard(this.board, ship, ship.x, ship.y));
         } else {
             // Если нельзя повернуть, возвращаем на место

@@ -24,12 +24,15 @@
 }
 
 .board {
-  position: relative;
-  width: fit-content;
   display: grid;
-  grid-template-rows: repeat(10, 2rem);
   grid-template-columns: repeat(10, 2rem);
+  grid-template-rows: repeat(10, 2rem);
   border: 1px solid var(--color-black);
+  box-sizing: border-box;
+}
+
+.row {
+  display: contents;
 }
 
 .port {
@@ -41,19 +44,15 @@
   gap: 0.5rem;
 }
 
-.row {
-  display: contents;
-}
-
 .cell {
-  box-sizing: border-box;
   border: 1px solid var(--color-black);
   width: 2rem;
   height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
+}
+
+.cell-over {
+  background-color: rgba(173, 216, 230, 0.5);
 }
 
 .cell-water {

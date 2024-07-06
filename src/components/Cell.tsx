@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { CellProps } from '../types';
 import {observer} from "mobx-react-lite";
 import {useDroppable} from "@dnd-kit/core";
@@ -8,7 +8,14 @@ import ShipCell from "./ShipCell.tsx";
 const Cell: React.FC<CellProps> = observer(({ ship, status, x, y }) => {
     const { isOver, setNodeRef } = useDroppable({
         id: `cell-${x}-${y}`,
+        data: { x, y }
     });
+
+    useEffect(() => {
+        if (isOver) {
+            gameStore.setHoveredCell(x, y);
+        }
+    }, [isOver, x, y]);
 
     const handleRotate = () => {
         if (ship) {
@@ -38,7 +45,7 @@ const Cell: React.FC<CellProps> = observer(({ ship, status, x, y }) => {
     return (
         <div
             ref={setNodeRef}
-            className={`cell ${cellStyle} ${isOver ? 'drag-over' : ''}`}
+            className={`cell ${cellStyle} ${isOver ? 'cell-over' : ''}`}
             aria-label={`Cell ${x},${y}, status: ${status}`}
             role='gridcell'
             onClick={handleRotate}
