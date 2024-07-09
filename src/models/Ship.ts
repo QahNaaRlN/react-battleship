@@ -19,6 +19,10 @@ class Ship {
         makeAutoObservable(this);
     }
 
+    setDirection(direction: [number, number]) {
+        this.direction = direction;
+    }
+
     setDragging(dragging: boolean) {
         this.isDragging = dragging;
     }

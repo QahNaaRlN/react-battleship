@@ -1,11 +1,16 @@
-import Ship from "./models/Ship.ts";
+import Ship from "./models/Ship";
 import React from "react";
 
-export interface CellProps {
-    ship: Ship | null;
-    status: 'water' | 'ship' | 'hit' | 'miss' | 'buffer';
+export type CellStatus = 'water' | 'ship' | 'hit' | 'miss' | 'buffer';
+
+export interface Position {
     x: number;
     y: number;
+}
+
+export interface CellProps extends Position {
+    ship: Ship | null;
+    status: CellStatus;
 }
 
 export interface DraggableShipProps {
@@ -14,11 +19,9 @@ export interface DraggableShipProps {
 
 export interface ShipCellProps {
     ship: Ship;
-    isRotatable?: boolean;
     onRotate?: (e: React.MouseEvent) => void;
-    isOnBoard: boolean;
 }
 
 export type Board = CellProps[][];
 
-export type Direction = [number, number][];
+export type Direction = [number, number];

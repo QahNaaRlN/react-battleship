@@ -2,10 +2,10 @@ import React from "react";
 import {ShipCellProps} from "../types.ts";
 
 
-const ShipCell: React.FC<ShipCellProps> = ({ship, onRotate, isOnBoard}) => {
+const ShipCell: React.FC<ShipCellProps> = ({ship, onRotate}) => {
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        if (isOnBoard && onRotate) {
+        if (onRotate) {
             onRotate(e);
         }
     };

@@ -1,5 +1,8 @@
 @charset "UTF-8";
 :root {
+  --cell-size: 32px;
+  --cell-border-width: 1px;
+  --total-cell-size: calc(var(--cell-size) + 2 * var(--cell-border-width));
   /* Основные цвета */
   --color-black: #000000;
   --color-blue: #1f91dc;
@@ -25,14 +28,9 @@
 
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 2rem);
-  grid-template-rows: repeat(10, 2rem);
-  border: 1px solid var(--color-black);
-  box-sizing: border-box;
-}
-
-.row {
-  display: contents;
+  grid-template-columns: repeat(10, minmax(var(--total-cell-size), var(--total-cell-size)));
+  grid-template-rows: repeat(10, minmax(var(--total-cell-size), var(--total-cell-size)));
+  border: var(--cell-border-width) solid var(--color-black);
 }
 
 .port {
@@ -44,10 +42,14 @@
   gap: 0.5rem;
 }
 
+.row {
+  display: contents;
+}
+
 .cell {
-  border: 1px solid var(--color-black);
-  width: 2rem;
-  height: 2rem;
+  border: var(--cell-border-width) solid var(--color-black);
+  width: var(--total-cell-size);
+  height: var(--total-cell-size);
   cursor: pointer;
 }
 
@@ -100,42 +102,6 @@
 
 .btn-auto-width {
   width: auto;
-}
-
-@keyframes shake {
-  0% {
-    transform: translate(1px, 1px) rotate(0deg);
-  }
-  10% {
-    transform: translate(-1px, -2px) rotate(-1deg);
-  }
-  20% {
-    transform: translate(-3px, 0px) rotate(1deg);
-  }
-  30% {
-    transform: translate(3px, 2px) rotate(0deg);
-  }
-  40% {
-    transform: translate(1px, -1px) rotate(1deg);
-  }
-  50% {
-    transform: translate(-1px, 2px) rotate(-1deg);
-  }
-  60% {
-    transform: translate(-3px, 1px) rotate(0deg);
-  }
-  70% {
-    transform: translate(3px, 1px) rotate(-1deg);
-  }
-  80% {
-    transform: translate(-1px, -1px) rotate(1deg);
-  }
-  90% {
-    transform: translate(1px, 2px) rotate(0deg);
-  }
-  100% {
-    transform: translate(1px, -2px) rotate(-1deg);
-  }
 }
 
 /*# sourceMappingURL=App.css.map */
