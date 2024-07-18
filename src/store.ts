@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { Board, Position, Direction } from './types';
 import Ship from './models/Ship'
 import { createEmptyBoard, getRandomInt, isCellFree } from './utils/logic';
-import { TOTAL_CELL_SIZE, DIRECTIONS, SHIP_SIZES, BOARD_SIZE } from './utils/constants';
+import { DIRECTIONS, SHIP_SIZES, BOARD_SIZE } from './utils/constants';
 
 class GameStore {
     board: Board = createEmptyBoard();
@@ -28,13 +28,6 @@ class GameStore {
         const ship = this.getShipById(shipId);
         if (!ship || !this.hoveredCell) return false;
         return this.canPlaceShip(this.board, ship.size, this.hoveredCell.x, this.hoveredCell.y, ship.direction);
-    }
-
-    calculateNearestCell(x: number, y: number): Position {
-        return {
-            x: Math.round(x / TOTAL_CELL_SIZE),
-            y: Math.round(y / TOTAL_CELL_SIZE)
-        };
     }
 
     isShipOverBoard(ship: Ship, nearestCell: Position): boolean {
@@ -179,32 +172,32 @@ class GameStore {
         return false;
     }
 
-    canRotateShip(shipId: number): boolean {
-        const ship = this.getShipById(shipId);
-        if (!ship || ship.x === null || ship.y === null) return false;
+    // canRotateShip(shipId: number): boolean {
+    //     const ship = this.getShipById(shipId);
+    //     if (!ship || ship.x === null || ship.y === null) return false;
 
-        const newDirection: Direction = ship.direction[0] === 0 ? [1, 0] : [0, 1];
-        const tempBoard = this.createTempBoardWithoutShip(ship);
+    //     const newDirection: Direction = ship.direction[0] === 0 ? [1, 0] : [0, 1];
+    //     const tempBoard = this.createTempBoardWithoutShip(ship);
 
-        return this.canPlaceShip(tempBoard, ship.size, ship.x, ship.y, newDirection);
-    }
+    //     return this.canPlaceShip(tempBoard, ship.size, ship.x, ship.y, newDirection);
+    // }
 
-    private createTempBoardWithoutShip(ship: Ship): Board {
-        return this.board.map(row => row.map(cell =>
-            cell.ship?.id === ship.id ? { ...cell, ship: null, status: 'water' } : { ...cell }
-        ));
-    }
+    // private createTempBoardWithoutShip(ship: Ship): Board {
+    //     return this.board.map(row => row.map(cell =>
+    //         cell.ship?.id === ship.id ? { ...cell, ship: null, status: 'water' } : { ...cell }
+    //     ));
+    // }
 
-    rotateShip(shipId: number): void {
-        const ship = this.getShipById(shipId);
-        if (!ship || ship.x === null || ship.y === null) return;
+    // rotateShip(shipId: number): void {
+    //     const ship = this.getShipById(shipId);
+    //     if (!ship || ship.x === null || ship.y === null) return;
 
-        if (this.canRotateShip(shipId)) {
-            this.removeShipFromBoard(ship);
-            ship.rotate();
-            this.setBoard(this.placeShipOnBoard(this.board, ship, ship.x, ship.y));
-        }
-    }
+    //     if (this.canRotateShip(shipId)) {
+    //         this.removeShipFromBoard(ship);
+    //         ship.rotate();
+    //         this.setBoard(this.placeShipOnBoard(this.board, ship, ship.x, ship.y));
+    //     }
+    // }
 
     private getShipById(id: number): Ship | undefined {
         return this.ships.find(ship => ship.id === id);
